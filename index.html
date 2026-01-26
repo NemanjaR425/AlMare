@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>LG Signage – Fixed Scale</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@900&family=Roboto+Slab:wght@400&display=swap" rel="stylesheet">
+
+<style>
+/* ===============================
+   GLOBAL / SCALING SYSTEM
+   =============================== */
+html, body {
+  margin: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  background: #000;
+}
+
+#viewport {
+  position: fixed;
+  inset: 0;
+  overflow: hidden;
+  background: #000;
+}
+
+#canvas {
+  position: absolute;
+  width: 1920px;
+  height: 1080px;
+  transform-origin: top left;
+}
+
+
+/* ===============================
+   SLIDES
+   =============================== */
+.slide {
+  position: absolute;
+  inset: 0;
+  display: none;
+}
+
+.slide.active {
+  display: block;
+}
+
+/* ===============================
+   LEFT / RIGHT LAYOUT
+   =============================== */
+.left {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 50%;
+  height: 100%;
+  padding: 80px;
+  box-sizing: border-box;
+  color: white;
+}
+
+.right {
+  position: absolute;
+  right: 0;
+  top: 0;
+  width: 50%;
+  height: 100%;
+  background-position: center;
+  background-size: cover;
+}
+
+/* ===============================
+   TEXT
+   =============================== */
+h1 {
+  font-family: 'Poppins', sans-serif;
+  font-size: 120px;
+  line-height: 1;
+  margin: 0;
+  opacity: 0;
+}
+
+h2 {
+  font-family: 'Roboto Slab', serif;
+  font-size: 34px;
+  margin-top: 12px;
+  opacity: 0;
+}
+
+/* ===============================
+   PRICE BADGE
+   =============================== */
+.price {
+  margin-top: 60px;
+  width: 200px;
+  height: 200px;
+  position: relative;
+  opacity: 0;
+}
+
+.price img {
+  width: 100%;
+  height: 100%;
+  animation: rotate 40s linear infinite;
+}
+
+.price span {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Poppins', sans-serif;
+  font-size: 64px;
+  color: #4669ab;
+}
+
+/* ===============================
+   ANIMATIONS (LG SAFE)
+   =============================== */
+.fade-in { animation: fadeIn 0.8s linear forwards; }
+.fade-out { animation: fadeOut 0.6s linear forwards; }
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+@keyframes fadeOut {
+  from { opacity: 1; }
+  to   { opacity: 0; }
+}
+
+@keyframes rotate {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
+}
+</style>
+</head>
+
+<body>
+
+<div id="viewport">
+<div id="canvas">
+
+<!-- SLIDE 1 -->
+<div class="slide active">
+  <div class="left" style="background:#4669ab;">
+    <h1>PIZZA</h1>
+    <h2>Brza, ukusna i idealna<br>kad ti se jede nešto dobro.</h2>
+    <div class="price">
+      <img src="price-shape.png">
+      <span>3€</span>
+    </div>
+  </div>
+  <div class="right" style="background-image:url('pizza.png');"></div>
+</div>
+
+<!-- SLIDE 2 -->
+<div class="slide">
+  <div class="left" style="background:#1f7a4d;">
+    <h1>BURGER</h1>
+    <h2>Sočan, topao i savršen<br>za pravu glad.</h2>
+    <div class="price">
+      <img src="price-shape.png">
+      <span>4€</span>
+    </div>
+  </div>
+  <div class="right" style="background-image:url('burger.png');"></div>
+</div>
+
+<!-- SLIDE 3 -->
+<div class="slide">
+  <div class="left" style="background:#7a3db8;">
+    <h1>CREPES</h1>
+    <h2>Slatke ili slane,<br>mekane i neodoljive.</h2>
+    <div class="price">
+      <img src="price-shape.png">
+      <span>3€</span>
+    </div>
+  </div>
+  <div class="right" style="background-image:url('crepes.png');"></div>
+</div>
+
+<!-- SLIDE 4 -->
+<div class="slide">
+  <div class="left" style="background:#1e88e5;">
+    <h1>ICE CREAM</h1>
+    <h2>Hladno, kremasto i<br>savršen izbor svaki dan.</h2>
+    <div class="price">
+      <img src="price-shape.png">
+      <span>2€</span>
+    </div>
+  </div>
+  <div class="right" style="background-image:url('icecream.png');"></div>
+</div>
+
+</div>
+</div>
+
+<script>
+/* ===============================
+   CANVAS SCALING (CRITICAL)
+   =============================== */
+function scaleCanvas() {
+  var canvas = document.getElementById('canvas');
+
+  var scaleX = window.innerWidth / 1920;
+  var scaleY = window.innerHeight / 1080;
+  var scale = Math.min(scaleX, scaleY);
+
+  var scaledWidth = 1920 * scale;
+  var scaledHeight = 1080 * scale;
+
+  canvas.style.transform = 'scale(' + scale + ')';
+
+  canvas.style.left = ((window.innerWidth - scaledWidth) / 2) + 'px';
+  canvas.style.top  = ((window.innerHeight - scaledHeight) / 2) + 'px';
+}
+
+window.addEventListener('resize', scaleCanvas);
+scaleCanvas();
+
+/* ===============================
+   SLIDE LOGIC
+   =============================== */
+var slides = document.getElementsByClassName('slide');
+var index = 0;
+
+function showSlide(i) {
+  var s = slides[i];
+  var h1 = s.querySelector('h1');
+  var h2 = s.querySelector('h2');
+  var price = s.querySelector('.price');
+
+  h1.className = 'fade-in';
+  setTimeout(function(){ h2.className = 'fade-in'; }, 200);
+  setTimeout(function(){ price.className = 'fade-in'; }, 400);
+}
+
+showSlide(0);
+
+setInterval(function () {
+  var current = slides[index];
+  var els = current.querySelectorAll('h1,h2,.price');
+  els.forEach(function(e){ e.className = 'fade-out'; });
+
+  setTimeout(function () {
+    current.style.display = 'none';
+    index = (index + 1) % slides.length;
+    slides[index].style.display = 'block';
+    showSlide(index);
+  }, 700);
+}, 10000);
+</script>
+
+</body>
+</html>
