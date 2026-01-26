@@ -1,0 +1,2 @@
+# AlMare
+AlMare Digital signage
