@@ -1,259 +1,206 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-<meta charset="utf-8">
-<title>LG Signage – Fixed Scale</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Al Mare Signage - Updated Assets</title>
+    <link href="https://fonts.googleapis.com/css2?family=Alex+Brush&family=Poppins:wght@900&family=Roboto+Slab:wght@300;500&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --font-brand: 'Alex Brush', cursive;
+            --font-h1: 'Poppins', sans-serif;
+            --font-h2: 'Roboto Slab', serif;
+            --hd-width: 1920px;
+            --hd-height: 1080px;
+            --color-1: #4669ab;
+            --color-2: #7a3db8;
+            --color-3: #1e88e5;
+            --price-navy: #1a2a4a; 
+        }
 
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@900&family=Roboto+Slab:wght@400&display=swap" rel="stylesheet">
+        body, html {
+            margin: 0; padding: 0;
+            width: 100%; height: 100%;
+            background-color: #000;
+            overflow: hidden;
+            display: flex; justify-content: center; align-items: center;
+        }
 
-<style>
-/* ===============================
-   GLOBAL / SCALING SYSTEM
-   =============================== */
-html, body {
-  margin: 0;
-  width: 100%;
-  height: 100%;
-  overflow: hidden;
-  background: #000;
+        #main-container {
+            width: var(--hd-width); height: var(--hd-height);
+            position: absolute;
+            overflow: hidden;
+            transform-origin: center center;
+            backface-visibility: hidden;
+        }
+
+        .slide {
+            position: absolute; top: 0; left: 0;
+            width: 100%; height: 100%;
+            opacity: 0;
+            transition: opacity 1s linear;
+            background-repeat: no-repeat;
+            background-size: auto 100%; 
+            will-change: opacity;
+        }
+
+        .slide.active { opacity: 1; z-index: 10; }
+
+        /* Slide Specific Backgrounds & Positions */
+        #slide-pizza { 
+            --current-bg: var(--color-1); 
+            background-image: url('https://i.postimg.cc/y8zp7LTy/pizza.jpg'); 
+            background-position: 200% center; 
+        }
+        #slide-crepes { 
+            --current-bg: var(--color-2); 
+            background-image: url('https://i.postimg.cc/kgdY7TyN/crepes.jpg'); 
+            background-position: 100% center; 
+        }
+        #slide-icecream { 
+            --current-bg: var(--color-3); 
+            background-image: url('https://i.postimg.cc/rwLZqf9C/icecream.jpg'); 
+            background-position: 250% center; 
+        }
+
+        /* BIGGER PIZZA */
+        #slide-pizza h1 { font-size: 500px; line-height: 0.8; }
+
+        .content-overlay {
+            width: 90%; height: 100%;
+            background: linear-gradient(to right, var(--current-bg) 55%, rgba(0,0,0,0) 95%);
+            padding: 100px 0 0 120px;
+            display: flex; flex-direction: column;
+            color: white; z-index: 15;
+            box-sizing: border-box;
+        }
+
+        /* Animations */
+        .brand-name, h1, h2, .badge-wrapper { opacity: 0; }
+        .active .brand-name { animation: fadeIn 0.6s ease forwards 0.3s, fadeOut 0.4s ease forwards 4.4s; }
+        .active h1 { animation: fadeIn 0.6s ease forwards 0.5s, fadeOut 0.4s ease forwards 4.5s; }
+        .active h2 { animation: fadeIn 0.6s ease forwards 0.7s, fadeOut 0.4s ease forwards 4.6s; }
+        .active .badge-wrapper { animation: fadeIn 0.6s ease forwards 0.9s, fadeOut 0.4s ease forwards 4.7s; }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translate3d(-30px, 0, 0); }
+            to { opacity: 1; transform: translate3d(0, 0, 0); }
+        }
+
+        @keyframes fadeOut {
+            from { opacity: 1; transform: translate3d(0, 0, 0); }
+            to { opacity: 0; transform: translate3d(0, -15px, 0); }
+        }
+
+        .brand-name { font-family: var(--font-brand); padding-left: 30px;font-size: 30px; margin-bottom: -10px; }
+        h1 { font-family: var(--font-h1); padding-left: -60px; font-size: 280px; margin: 0; line-height: 0.85; text-transform: uppercase; font-weight: 900; }
+        h2 { font-family: var(--font-h2); font-size: 38px; padding-left: 25px; max-width: 750px; line-height: 1.5; margin-top: 10px; font-weight: 300; }
+
+        .badge-wrapper {
+            position: absolute; bottom: 120px; left: 680px;
+            width: 400px; height: 400px;
+            display: flex; align-items: center; justify-content: center;
+        }
+
+       /* The parent container must be relative */
+.slide-container {
+    position: relative;
+    width: 1920px; /* Standard Full HD width */
+    height: 1080px; /* Standard Full HD height */
+    overflow: hidden;
 }
 
-#viewport {
-  position: fixed;
-  inset: 0;
-  overflow: hidden;
-  background: #000;
+.brand-name {
+    position: absolute;
+    bottom: 40px;  /* Distance from the bottom edge */
+    right: 80px;   /* Distance from the right edge */
+    margin: 0;
+    z-index: 10;   /* Ensures it stays above background images */
+    
+    /* Optional: keep it small and elegant */
+    font-size: 180px;
+    font-family: 'Freestyle Script', cursive;
 }
+        .png-badge {
+            position: absolute; width: 100%; height: 100%;
+            /* USE YOUR price-shape.png HERE */
+            background: url('https://i.postimg.cc/XY7t2JXB/price_shape.png') no-repeat center center;
+            background-size: contain;
+            animation: rotateFull 40s linear infinite; /* Slower for TV smoothness */
+            will-change: transform;
+        }
 
-#canvas {
-  position: absolute;
-  width: 1920px;
-  height: 1080px;
-  transform-origin: top left;
-}
+        @keyframes rotateFull { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
 
+        .price-text {
+            position: relative; z-index: 5;
+            color: var(--price-navy); /* Fixed visibility issue */
+            font-family: var(--font-h1); font-size: 230px; font-weight: 900;
+            font-style: italic;
+            display: flex; align-items: baseline;
+            text-shadow: 0 2px 10px rgba(17, 32, 94, 0);
+        }
+        .price-text span { font-size: 120px; margin-left: 5px; }
 
-/* ===============================
-   SLIDES
-   =============================== */
-.slide {
-  position: absolute;
-  inset: 0;
-  display: none;
-}
-
-.slide.active {
-  display: block;
-}
-
-/* ===============================
-   LEFT / RIGHT LAYOUT
-   =============================== */
-.left {
-  position: absolute;
-  left: 0;
-  top: 0;
-  width: 50%;
-  height: 100%;
-  padding: 80px;
-  box-sizing: border-box;
-  color: white;
-}
-
-.right {
-  position: absolute;
-  right: 0;
-  top: 0;
-  width: 50%;
-  height: 100%;
-  background-position: center;
-  background-size: cover;
-}
-
-/* ===============================
-   TEXT
-   =============================== */
-h1 {
-  font-family: 'Poppins', sans-serif;
-  font-size: 120px;
-  line-height: 1;
-  margin: 0;
-  opacity: 0;
-}
-
-h2 {
-  font-family: 'Roboto Slab', serif;
-  font-size: 34px;
-  margin-top: 12px;
-  opacity: 0;
-}
-
-/* ===============================
-   PRICE BADGE
-   =============================== */
-.price {
-  margin-top: 60px;
-  width: 200px;
-  height: 200px;
-  position: relative;
-  opacity: 0;
-}
-
-.price img {
-  width: 100%;
-  height: 100%;
-  animation: rotate 40s linear infinite;
-}
-
-.price span {
-  position: absolute;
-  inset: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-family: 'Poppins', sans-serif;
-  font-size: 64px;
-  color: #4669ab;
-}
-
-/* ===============================
-   ANIMATIONS (LG SAFE)
-   =============================== */
-.fade-in { animation: fadeIn 0.8s linear forwards; }
-.fade-out { animation: fadeOut 0.6s linear forwards; }
-
-@keyframes fadeIn {
-  from { opacity: 0; }
-  to   { opacity: 1; }
-}
-
-@keyframes fadeOut {
-  from { opacity: 1; }
-  to   { opacity: 0; }
-}
-
-@keyframes rotate {
-  from { transform: rotate(0deg); }
-  to   { transform: rotate(360deg); }
-}
-</style>
+    </style>
 </head>
-
 <body>
 
-<div id="viewport">
-<div id="canvas">
+    <div id="main-container">
+        <p class="brand-name">Al Mare</p>
+        <div class="slide active" id="slide-pizza">
+            <div class="content-overlay">
+                <div class="brand-name">Al Mare</div>
+                <h1>PIZZA</h1>
+                <h2>Brza, ukusna i idealna kad ti se jede nešto dobro, bez čekanja.</h2>
+                <div class="badge-wrapper">
+                    <div class="png-badge"></div>
+                    <div class="price-text">3<span>€</span></div>
+                </div>
+            </div>
+        </div>
 
-<!-- SLIDE 1 -->
-<div class="slide active">
-  <div class="left" style="background:#4669ab;">
-    <h1>PIZZA</h1>
-    <h2>Brza, ukusna i idealna<br>kad ti se jede nešto dobro.</h2>
-    <div class="price">
-      <img src="price-shape.png">
-      <span>3€</span>
+        <div class="slide" id="slide-crepes">
+            <div class="content-overlay">
+                <div class="brand-name">Al Mare</div>
+                <h1>PALAČINKE</h1>
+                <h2>Slatke i slane, savršene za svaku priliku, sa prelivom po izboru.</h2>
+                <div class="badge-wrapper">
+                    <div class="png-badge"></div>
+                    <div class="price-text">4<span>€</span></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="slide" id="slide-icecream">
+            <div class="content-overlay">
+                <div class="brand-name">Al Mare</div>
+                <h1>SLADOLED</h1>
+                <h2>Osvežavajući užitak u raznim ukusima, savršen kraj obroka.</h2>
+                <div class="badge-wrapper">
+                    <div class="png-badge"></div>
+                    <div class="price-text">2<span>€</span></div>
+                </div>
+            </div>
+        </div>
     </div>
-  </div>
-  <div class="right" style="background-image:url('pizza.png');"></div>
-</div>
 
-<!-- SLIDE 2 -->
-<div class="slide">
-  <div class="left" style="background:#1f7a4d;">
-    <h1>BURGER</h1>
-    <h2>Sočan, topao i savršen<br>za pravu glad.</h2>
-    <div class="price">
-      <img src="price-shape.png">
-      <span>4€</span>
-    </div>
-  </div>
-  <div class="right" style="background-image:url('burger.png');"></div>
-</div>
+    <script>
+        function scaleToFit() {
+            const container = document.getElementById('main-container');
+            const scale = Math.max(window.innerWidth / 1920, window.innerHeight / 1080);
+            container.style.transform = `scale(${scale})`;
+        }
+        window.addEventListener('resize', scaleToFit);
+        scaleToFit();
 
-<!-- SLIDE 3 -->
-<div class="slide">
-  <div class="left" style="background:#7a3db8;">
-    <h1>CREPES</h1>
-    <h2>Slatke ili slane,<br>mekane i neodoljive.</h2>
-    <div class="price">
-      <img src="price-shape.png">
-      <span>3€</span>
-    </div>
-  </div>
-  <div class="right" style="background-image:url('crepes.png');"></div>
-</div>
-
-<!-- SLIDE 4 -->
-<div class="slide">
-  <div class="left" style="background:#1e88e5;">
-    <h1>ICE CREAM</h1>
-    <h2>Hladno, kremasto i<br>savršen izbor svaki dan.</h2>
-    <div class="price">
-      <img src="price-shape.png">
-      <span>2€</span>
-    </div>
-  </div>
-  <div class="right" style="background-image:url('icecream.png');"></div>
-</div>
-
-</div>
-</div>
-
-<script>
-/* ===============================
-   CANVAS SCALING (CRITICAL)
-   =============================== */
-function scaleCanvas() {
-  var canvas = document.getElementById('canvas');
-
-  var scaleX = window.innerWidth / 1920;
-  var scaleY = window.innerHeight / 1080;
-  var scale = Math.min(scaleX, scaleY);
-
-  var scaledWidth = 1920 * scale;
-  var scaledHeight = 1080 * scale;
-
-  canvas.style.transform = 'scale(' + scale + ')';
-
-  canvas.style.left = ((window.innerWidth - scaledWidth) / 2) + 'px';
-  canvas.style.top  = ((window.innerHeight - scaledHeight) / 2) + 'px';
-}
-
-window.addEventListener('resize', scaleCanvas);
-scaleCanvas();
-
-/* ===============================
-   SLIDE LOGIC
-   =============================== */
-var slides = document.getElementsByClassName('slide');
-var index = 0;
-
-function showSlide(i) {
-  var s = slides[i];
-  var h1 = s.querySelector('h1');
-  var h2 = s.querySelector('h2');
-  var price = s.querySelector('.price');
-
-  h1.className = 'fade-in';
-  setTimeout(function(){ h2.className = 'fade-in'; }, 200);
-  setTimeout(function(){ price.className = 'fade-in'; }, 400);
-}
-
-showSlide(0);
-
-setInterval(function () {
-  var current = slides[index];
-  var els = current.querySelectorAll('h1,h2,.price');
-  els.forEach(function(e){ e.className = 'fade-out'; });
-
-  setTimeout(function () {
-    current.style.display = 'none';
-    index = (index + 1) % slides.length;
-    slides[index].style.display = 'block';
-    showSlide(index);
-  }, 700);
-}, 10000);
-</script>
-
+        const slides = document.querySelectorAll('.slide');
+        let currentSlide = 0;
+        setInterval(() => {
+            slides[currentSlide].classList.remove('active');
+            currentSlide = (currentSlide + 1) % slides.length;
+            slides[currentSlide].classList.add('active');
+        }, 5000);
+    </script>
 </body>
 </html>
